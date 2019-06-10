@@ -80,15 +80,19 @@ window.renderStatistics = function (ctx, names, times) {
   var columnHeight;
   var columnX;
 
+  var indent;
+
   for (var i = 0; i < names.length; i++) {
-    textX = TEXT_X_BEGIN + i * (COLUMN_WIDTH + COLUMN_DISTANCE);
+    indent = i * (COLUMN_WIDTH + COLUMN_DISTANCE);
+    textX = TEXT_X_BEGIN + indent;
     columnHeight = times[i] * barScale;
     textTimeY = CLOUD_HEIGHT - columnHeight - STATISTICS_FONT_HEIGHT * 1.5;
-    columnX = COLUMN_X_BEGIN + i * (COLUMN_WIDTH + COLUMN_DISTANCE);
+    columnX = COLUMN_X_BEGIN + indent;
     ctx.fillStyle = STATISTICS_TEXT_COLOR;
     ctx.font = STATISTICS_TEXT_FONT;
     ctx.fillText(Math.round(times[i]), textX, textTimeY);
     ctx.fillText(names[i], textX, CLOUD_HEIGHT);
+
     renderBar(ctx, columnX, COLUMN_Y_BEGIN, columnHeight, renderBarColor(names[i]));
   }
 };
