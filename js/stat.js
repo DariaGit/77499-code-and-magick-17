@@ -73,21 +73,22 @@ window.renderStatistics = function (ctx, names, times) {
   renderCloud(ctx, CLOUD_X, CLOUD_Y, CLOUD_COLOR);
   renderStatisticsText(ctx);
 
-  var maxTime = getMaxTime(times);
+  var barScale = COLUMN_HEIGHT / getMaxTime(times);
+  var textX;
+  var textTimeY;
+
   var columnHeight;
-  var columnX = COLUMN_X_BEGIN;
-  var barScale = COLUMN_HEIGHT / maxTime;
-  var indent = COLUMN_WIDTH + COLUMN_DISTANCE;
-  var barTextX;
+  var columnX;
 
   for (var i = 0; i < names.length; i++) {
+    textX = TEXT_X_BEGIN + i * (COLUMN_WIDTH + COLUMN_DISTANCE);
+    columnHeight = times[i] * barScale;
+    textTimeY = CLOUD_HEIGHT - columnHeight - STATISTICS_FONT_HEIGHT * 1.5;
+    columnX = COLUMN_X_BEGIN + i * (COLUMN_WIDTH + COLUMN_DISTANCE);
     ctx.fillStyle = STATISTICS_TEXT_COLOR;
     ctx.font = STATISTICS_TEXT_FONT;
-    barTextX = TEXT_X_BEGIN + i * (COLUMN_WIDTH + COLUMN_DISTANCE);
-    ctx.fillText(Math.round(times[i]), barTextX, CLOUD_HEIGHT - (barScale * times[i]) - STATISTICS_FONT_HEIGHT * 1.5);
-    ctx.fillText(names[i], barTextX, CLOUD_HEIGHT);
-    columnHeight = times[i] * barScale;
+    ctx.fillText(Math.round(times[i]), textX, textTimeY);
+    ctx.fillText(names[i], textX, CLOUD_HEIGHT);
     renderBar(ctx, columnX, COLUMN_Y_BEGIN, columnHeight, renderBarColor(names[i]));
-    columnX += indent;
   }
 };
