@@ -19,7 +19,7 @@ var STATISTICS_FONT_HEIGHT = 16;
 var TEXT_CONGRATULATIONS = ['Ура, вы победили!', 'Список результатов:'];
 var TEXT_X_OFFSET = 20;
 var TEXT_X_BEGIN = CLOUD_X + TEXT_X_OFFSET;
-var TEXT_Y_OFFSET = 40;
+var TEXT_Y_OFFSET = 30;
 var TEXT_Y_BEGIN = CLOUD_Y + TEXT_Y_OFFSET;
 var TEXT_Y_DISTANCE = 20;
 
@@ -46,14 +46,13 @@ var renderStatisticsText = function (ctx) {
   }
 };
 
-var getBarColor = function (name) {
+var renderBarColor = function (name) {
   return name === COLUMN_WINNER_TEXT
     ? COLUMN_WINNER_COLOR
     : 'rgba(0, 100, 0, ' + Math.random() + ')';
 };
 
-// Функция, которая рисует столбцы гистограммы
-var renderBar = function renderBar(ctx, x, y, height, color) {
+var renderBar = function (ctx, x, y, height, color) {
   ctx.fillStyle = color;
   ctx.fillRect(x, y, COLUMN_WIDTH, -height);
 };
@@ -74,20 +73,21 @@ window.renderStatistics = function (ctx, names, times) {
   renderCloud(ctx, CLOUD_X, CLOUD_Y, CLOUD_COLOR);
   renderStatisticsText(ctx);
 
+  var maxTime = getMaxTime(times);
   var columnHeight;
   var columnX = COLUMN_X_BEGIN;
-  var maxTime = getMaxTime(times);
   var barScale = COLUMN_HEIGHT / maxTime;
-  var dist = 0;
+  var barTextDist = 0;
+  var indent = COLUMN_WIDTH + COLUMN_DISTANCE;
 
   for (var i = 0; i < names.length; i++) {
     ctx.fillStyle = STATISTICS_TEXT_COLOR;
     ctx.font = STATISTICS_TEXT_FONT;
-    ctx.fillText(Math.round(times[i]), TEXT_X_BEGIN + dist, CLOUD_HEIGHT - (barScale * times[i]) - STATISTICS_FONT_HEIGHT * 1.5);
-    ctx.fillText(names[i], (TEXT_X_BEGIN + dist), CLOUD_HEIGHT);
-    dist += COLUMN_WIDTH + COLUMN_DISTANCE;
+    ctx.fillText(Math.round(times[i]), TEXT_X_BEGIN + barTextDist, CLOUD_HEIGHT - (barScale * times[i]) - STATISTICS_FONT_HEIGHT * 1.5);
+    ctx.fillText(names[i], (TEXT_X_BEGIN + barTextDist), CLOUD_HEIGHT);
     columnHeight = times[i] * barScale;
-    renderBar(ctx, columnX, COLUMN_Y_BEGIN, columnHeight, getBarColor(names[i]));
-    columnX += COLUMN_WIDTH + COLUMN_DISTANCE;
+    renderBar(ctx, columnX, COLUMN_Y_BEGIN, columnHeight, renderBarColor(names[i]));
+    barTextDist += indent;
+    columnX += indent;
   }
 };
