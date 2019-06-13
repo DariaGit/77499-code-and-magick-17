@@ -38,18 +38,18 @@ var generateColor = function (arrColors) {
   return getRandomElement(shuffle(arrColors));
 };
 
-var generateWizard = function (firstNamesArr, lastNamesArr) {
+var generateWizard = function () {
   return {
-    name: generateWizardFullName(firstNamesArr, lastNamesArr),
+    name: generateWizardFullName(firstNames, lastNames),
     coatColor: generateColor(robesColors),
     eyesColor: generateColor(eyesColors)
   };
 };
 
-var generateWizards = function (wizardsNumber, firstNamesArr, lastNamesArr) {
+var generateWizards = function (wizardsNumber) {
   var wizardsArr = [];
   for (i = 0; i < wizardsNumber; i++) {
-    wizardsArr.push(generateWizard(firstNamesArr, lastNamesArr));
+    wizardsArr.push(generateWizard(firstNames, firstNames));
   }
   return wizardsArr;
 };
