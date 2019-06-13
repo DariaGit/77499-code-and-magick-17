@@ -1,9 +1,10 @@
 'use strict';
 
-var names = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-var sernames = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
+var firstNames = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
+var lastNames = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
 var robesColors = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var eyesColors = ['black', 'red', 'blue', 'yellow', 'green'];
+var wizards;
 var setupElement = document.querySelector('.setup');
 var similarListElement = document.querySelector('.setup-similar-list');
 var similarWizardTemplate = document.querySelector('#similar-wizard-template')
@@ -37,28 +38,23 @@ var generateColor = function (arrColors) {
   return getRandomElement(shuffle(arrColors));
 };
 
-var wizards = [
-  {
-    name: generateWizardFullName(names, sernames),
+var generateWizard = function (firstNamesArr, lastNamesArr) {
+  return {
+    name: generateWizardFullName(firstNamesArr, lastNamesArr),
     coatColor: generateColor(robesColors),
     eyesColor: generateColor(eyesColors)
-  },
-  {
-    name: generateWizardFullName(names, sernames),
-    coatColor: generateColor(robesColors),
-    eyesColor: generateColor(eyesColors)
-  },
-  {
-    name: generateWizardFullName(names, sernames),
-    coatColor: generateColor(robesColors),
-    eyesColor: generateColor(eyesColors)
-  },
-  {
-    name: generateWizardFullName(names, sernames),
-    coatColor: generateColor(robesColors),
-    eyesColor: generateColor(eyesColors)
+  };
+};
+
+var generateWizards = function (wizardsNumber, firstNamesArr, lastNamesArr) {
+  var wizardsArr = [];
+  for (i = 0; i < wizardsNumber; i++) {
+    wizardsArr.push(generateWizard(firstNamesArr, lastNamesArr));
   }
-];
+  return wizardsArr;
+};
+
+wizards = generateWizards(4, firstNames, lastNames);
 
 var renderWizard = function (wizard) {
   var wizardElement = similarWizardTemplate.cloneNode(true);
