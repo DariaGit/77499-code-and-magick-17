@@ -12,7 +12,7 @@ var similarWizardTemplate = document.querySelector('#similar-wizard-template')
     .querySelector('.setup-similar-item');
 var fragment = document.createDocumentFragment();
 
-function shuffle(array) {
+var shuffle = function (array) {
   for (var i = array.length - 1; i > 0; i--) {
     var j = Math.floor(Math.random() * (i + 1));
     var temp = array[j];
@@ -20,15 +20,16 @@ function shuffle(array) {
     array[i] = temp;
   }
   return array;
-}
+};
 
-function getRandomElement(array) {
+
+var getRandomElement = function (array) {
   for (var i = 0; i < array.length; i++) {
     var randomIndex = Math.floor(Math.random() * array.length);
     var randomElement = array[randomIndex];
   }
   return randomElement;
-}
+};
 
 var generateWizardFullName = function (arrNames, arrSernames) {
   return getRandomElement(shuffle(arrNames)) + ' ' + getRandomElement(shuffle(arrSernames));
