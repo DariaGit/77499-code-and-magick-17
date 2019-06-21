@@ -113,8 +113,9 @@ wizardCoatElement.addEventListener('click', function () {
 });
 
 wizardEyesElement.addEventListener('click', function () {
-  wizardEyesElement.style.fill = generateColor(EYES_COLORS);
-  eyesInputElement.value = wizardEyesElement.style.fill;
+  var wizardEyesColor = generateColor(EYES_COLORS);
+  wizardEyesElement.style.fill = wizardEyesColor;
+  eyesInputElement.value = wizardEyesColor;
 });
 
 setupFireballWrapElement.addEventListener('click', function () {
