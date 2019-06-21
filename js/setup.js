@@ -8,6 +8,9 @@ var ROBES_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 16
 var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
 var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 
+var KEY_CODE_ENTER = 13;
+var KEY_CODE_ESC = 27;
+
 var generateRandomNumber = function (min, max) {
   return Math.round(Math.random() * (max - min) + min);
 };
@@ -21,15 +24,11 @@ var generateWizardFullName = function () {
   return getRandomElement(FIRST_NAMES) + ' ' + getRandomElement(LAST_NAMES);
 };
 
-var generateColor = function (arrColors) {
-  return getRandomElement(arrColors);
-};
-
 var generateWizard = function () {
   return {
     name: generateWizardFullName(),
-    coatColor: generateColor(ROBES_COLORS),
-    eyesColor: generateColor(EYES_COLORS)
+    coatColor: getRandomElement(ROBES_COLORS),
+    eyesColor: getRandomElement(EYES_COLORS)
   };
 };
 
@@ -67,7 +66,13 @@ var closeSetupPopup = function () {
   setupElement.classList.add('hidden');
 };
 
-var isSetupUserNameElementOnFocus = false;
+var errors = {
+  TOO_SHORT: 'Имя должно состоять минимум из 2-х символов',
+  TOO_LONG: 'Имя не должно превышать 25-ти символов',
+  VALUE_MISSING: 'Обязательное поле'
+};
+
+var isUserNameElementFocused = false;
 var setupElement = document.querySelector('.setup');
 var setupOpenIconElement = document.querySelector('.setup-open-icon');
 var setupUserNameElement = setupElement.querySelector('.setup-user-name');
@@ -91,11 +96,6 @@ renderWizards(wizards);
 
 document.querySelector('.setup-similar').classList.remove('hidden');
 
-var errors = {
-  tooShort: 'Имя должно состоять минимум из 2-х символов',
-  tooLong: 'Имя не должно превышать 25-ти символов',
-  valueMissing: 'Обязательное поле'
-};
 
 setupUserNameElement.addEventListener('invalid', function () {
   var error = Object.keys(errors).find(function (key) {
@@ -108,19 +108,21 @@ setupUserNameElement.addEventListener('invalid', function () {
 });
 
 wizardCoatElement.addEventListener('click', function () {
-  wizardCoatElement.style.fill = generateColor(ROBES_COLORS);
-  coatInputElement.value = wizardCoatElement.style.fill;
+  var color = getRandomElement(ROBES_COLORS);
+  wizardCoatElement.style.fill = color;
+  coatInputElement.value = color;
 });
 
 wizardEyesElement.addEventListener('click', function () {
-  var wizardEyesColor = generateColor(EYES_COLORS);
-  wizardEyesElement.style.fill = wizardEyesColor;
-  eyesInputElement.value = wizardEyesColor;
+  var color = getRandomElement(EYES_COLORS);
+  wizardEyesElement.style.fill = color;
+  eyesInputElement.value = color;
 });
 
 setupFireballWrapElement.addEventListener('click', function () {
-  setupFireballWrapElement.style.backgroundColor = generateColor(FIREBALL_COLORS);
-  fireballColorInputElement.value = setupFireballWrapElement.style.backgroundColor;
+  var color = getRandomElement(FIREBALL_COLORS);
+  setupFireballWrapElement.style.backgroundColor = color;
+  fireballColorInputElement.value = color;
 });
 
 setupCloseElement.addEventListener('click', function () {
@@ -128,21 +130,21 @@ setupCloseElement.addEventListener('click', function () {
 });
 
 setupCloseElement.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === 13) {
+  if (evt.keyCode === KEY_CODE_ENTER) {
     closeSetupPopup();
   }
 });
 
 setupUserNameElement.addEventListener('focus', function () {
-  isSetupUserNameElementOnFocus = true;
+  isUserNameElementFocused = true;
 });
 
 setupUserNameElement.addEventListener('blur', function () {
-  isSetupUserNameElementOnFocus = false;
+  isUserNameElementFocused = false;
 });
 
 document.addEventListener('keydown', function (evt) {
-  if (isSetupUserNameElementOnFocus === false && evt.keyCode === 27) {
+  if (isUserNameElementFocused === false && evt.keyCode === KEY_CODE_ESC) {
     closeSetupPopup();
   }
 });
@@ -152,7 +154,7 @@ setupOpenIconElement.addEventListener('click', function () {
 });
 
 setupOpenIconElement.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === 13) {
+  if (evt.keyCode === KEY_CODE_ENTER) {
     openSetupPopup();
   }
 });
