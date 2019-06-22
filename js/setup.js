@@ -11,6 +11,12 @@ var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 var KEY_CODE_ENTER = 13;
 var KEY_CODE_ESC = 27;
 
+var Errors = {
+  TOO_SHORT: 'Имя должно состоять минимум из 2-х символов',
+  TOO_LONG: 'Имя не должно превышать 25-ти символов',
+  VALUE_MISSING: 'Обязательное поле'
+};
+
 var generateRandomNumber = function (min, max) {
   return Math.round(Math.random() * (max - min) + min);
 };
@@ -66,12 +72,6 @@ var closeSetupPopup = function () {
   setupElement.classList.add('hidden');
 };
 
-var errors = {
-  TOO_SHORT: 'Имя должно состоять минимум из 2-х символов',
-  TOO_LONG: 'Имя не должно превышать 25-ти символов',
-  VALUE_MISSING: 'Обязательное поле'
-};
-
 var isUserNameElementFocused = false;
 var setupElement = document.querySelector('.setup');
 var setupOpenIconElement = document.querySelector('.setup-open-icon');
@@ -98,11 +98,11 @@ document.querySelector('.setup-similar').classList.remove('hidden');
 
 
 setupUserNameElement.addEventListener('invalid', function () {
-  var error = Object.keys(errors).find(function (key) {
+  var error = Object.keys(Errors).find(function (key) {
     return setupUserNameElement.validity[key];
   });
 
-  var validity = error ? errors[error] : '';
+  var validity = error ? Errors[error] : '';
 
   setupUserNameElement.setCustomValidity(validity);
 });
