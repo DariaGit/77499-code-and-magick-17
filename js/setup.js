@@ -12,9 +12,18 @@ var KEY_CODE_ENTER = 13;
 var KEY_CODE_ESC = 27;
 
 var Errors = {
-  TOO_SHORT: 'Имя должно состоять минимум из 2-х символов',
-  TOO_LONG: 'Имя не должно превышать 25-ти символов',
-  VALUE_MISSING: 'Обязательное поле'
+  TOO_SHORT: {
+    validity: 'tooShort',
+    message: 'Имя должно состоять минимум из 2-х символов'
+  },
+  TOO_LONG: {
+    validity: 'tooLong',
+    message: 'Имя не должно превышать 25-ти символов'
+  },
+  VALUE_MISSING: {
+    validity: 'valueMissing',
+    message: 'Обязательное поле'
+  }
 };
 
 var generateRandomNumber = function (min, max) {
@@ -96,15 +105,16 @@ renderWizards(wizards);
 
 document.querySelector('.setup-similar').classList.remove('hidden');
 
-
 setupUserNameElement.addEventListener('invalid', function () {
-  var error = Object.keys(Errors).find(function (key) {
-    return setupUserNameElement.validity[key];
+  var foundKey = Object.keys(Errors).find(function (key) {
+    var error = Errors[key];
+    return setupUserNameElement.validity[error.validity];
   });
 
-  var validity = error ? Errors[error] : '';
+  var error = Errors[foundKey];
+  var message = error ? error.message : '';
 
-  setupUserNameElement.setCustomValidity(validity);
+  setupUserNameElement.setCustomValidity(message);
 });
 
 wizardCoatElement.addEventListener('click', function () {
